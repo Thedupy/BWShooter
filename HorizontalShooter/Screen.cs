@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HorizontalShooter
+namespace HorizontalShooter//LMOOOOL
 {
     public class Screen
     {
@@ -60,11 +60,11 @@ namespace HorizontalShooter
             Ship = new Player(new Vector2(50, 500));
             Ennemis = new List<Ennemi>()
             {
-                new Ennemi(new Vector2(750, 150), Color.White),
-                new Ennemi(new Vector2(750, 450), Color.Black),
-                new Ennemi(new Vector2(750, 500), Color.Black),
-                new Ennemi(new Vector2(750, 320), Color.White),
-                new Ennemi(new Vector2(750, 560), Color.Black)
+                new NormalEnnemi(new Vector2(750, 150), Color.White),
+                new NormalEnnemi(new Vector2(750, 450), Color.Black),
+                new NormalEnnemi(new Vector2(750, 500), Color.Black),
+                new NormalEnnemi(new Vector2(750, 320), Color.White),
+                new NormalEnnemi(new Vector2(750, 560), Color.Black)
             };
             WManager = new WaveManager(ref Ennemis);
         }
@@ -88,6 +88,7 @@ namespace HorizontalShooter
             {
                 WManager.NormalWave(5, EnnemiType.Sine, Main.Rand.Next(50,550));
             }
+
             Ship.Update(time);
             CollisionBulletEnnemis(Ship.Bullets, Ennemis);
             Ennemis.RemoveAll(k => k.Position.X + k.Texture.Width < 0);
@@ -125,6 +126,7 @@ namespace HorizontalShooter
 
                     if (Shoot[i].Hitbox.Intersects(ennemis[j].Hitbox))
                     {
+                        Assets.Sounds["bullethit"].Play();
                         bullet.Remove(bullet[i]);
                         ennemis.Remove(ennemis[j]);
                     }
@@ -136,6 +138,8 @@ namespace HorizontalShooter
                 Missile kek = Missile[i] as Missile;
                 if (kek.Cible != null && kek.Hitbox.Intersects(kek.Cible.Hitbox))
                 {
+                    kek.Launch.Stop();
+                    Assets.PlayRandomSound(Assets.MissileHitSound);
                     bullet.Remove(kek);
                     ennemis.Remove(kek.Cible);
                 }

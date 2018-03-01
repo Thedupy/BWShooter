@@ -39,13 +39,13 @@ namespace HorizontalShooter
                     switch (Etype)
                     {
                         case EnnemiType.Normal:
-                            Buffer.Add(new Ennemi(new Vector2(Main.Width + 50, PosY), Color));
+                            Buffer.Add(new NormalEnnemi(new Vector2(Main.Width + 50, PosY), Color));
                             break;
                         case EnnemiType.Path:
-                            Buffer.Add(new Ennemi(new Vector2(Main.Width + 50, PosY), Color, Path));
+                            Buffer.Add(new PathEnnemi(new Vector2(Main.Width + 50, PosY), Color, Path));
                             break;
                         case EnnemiType.Sine:
-                            Buffer.Add(new Ennemi(new Vector2(Main.Width + 50, PosY), Color, Sin));
+                            Buffer.Add(new SineEnnemi(new Vector2(Main.Width + 50, PosY), Color, Sin));
                             break;
                     }
                     cpt++;

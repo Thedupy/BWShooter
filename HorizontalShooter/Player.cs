@@ -34,9 +34,11 @@ namespace HorizontalShooter
             if(Input.KeyPressed(Keys.Space, true))
             {
                 Bullets.Add(new GunShoot(new Vector2(Position.X + Texture.Width + Velocity.X + 5, Position.Y + (Texture.Height / 2))));
+                Assets.Sounds["bullet"].Play();
             }
             if (Input.KeyPressed(Keys.E, true))
             {
+                Assets.PlayRandomSound(Assets.MissileSound);
                 Bullets.Add(new Missile(new Vector2(Position.X, Position.Y + Velocity.Y)));
             }
 

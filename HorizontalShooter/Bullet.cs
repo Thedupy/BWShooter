@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,8 @@ namespace HorizontalShooter
         private float Rotation;
         TweenPosition TPosition;
 
+        public SoundEffectInstance Launch = Assets.Sounds["missilelaunch"].CreateInstance();
+
         public Missile(Vector2 position) : base(Utils.CreateTexture(30,10, Color.White), position, false)
         {
             TPosition = new TweenPosition(this);
@@ -87,6 +90,8 @@ namespace HorizontalShooter
                     List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false);
                     if (Prout.Count > 0)
                     {
+                        Assets.Sounds["missileset"].Play();
+                        Launch.Play();
                         Cible = Prout[Main.Rand.Next(Prout.Count)];
                         Cible.Targeted = true;
                     }

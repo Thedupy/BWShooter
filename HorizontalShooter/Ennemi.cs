@@ -18,7 +18,7 @@ namespace HorizontalShooter
         
 
         //EFFECT
-        bool Effect;
+        public bool Effect;
 
 
         public Ennemi(Vector2 position, Color color) : base(Utils.CreateTexture(40,40, Color.White), position, false)
@@ -36,6 +36,11 @@ namespace HorizontalShooter
         new public void Draw(SpriteBatch batch)
         {
             //base.Draw(batch);
+            if (Effect)
+            {
+                Assets.BlackWhite.Parameters["param1"].SetValue(pouet);
+                Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+            }
             batch.Draw(Texture, Position, Color);
         }
 
@@ -58,6 +63,7 @@ namespace HorizontalShooter
 
         public override void Update(float time)
         {
+            base.Update(time);
             TPosition.Update(time, ref Position);
             PathTimer += time;
             if (PathTimer > 1500)
@@ -83,6 +89,7 @@ namespace HorizontalShooter
 
         public override void Update(float time)
         {
+            base.Update(time);
             Velocity.X = -2;
         }
 
@@ -102,6 +109,7 @@ namespace HorizontalShooter
 
         public override void Update(float time)
         {
+            base.Update(time);
             Position.Y = StartPositionY + (-(float)Math.Cos(Position.X / 100) * Sin);
             Velocity.X = -2;
         }
