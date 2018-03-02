@@ -46,7 +46,7 @@ namespace HorizontalShooter
 
         public override void Draw(SpriteBatch batch)
         {
-            Assets.BlackWhite.Parameters["param1"].SetValue(pouet);
+            Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
             Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
             batch.Draw(Texture, Position, Color.White);
         }
@@ -72,7 +72,7 @@ namespace HorizontalShooter
 
         public override void Update(float time)
         {
-            pouet = (GameScreen.Duality.Height - Position.Y) / Texture.Height;
+            DualityValue = (GameScreen.Duality.Height - Position.Y) / Texture.Height;
 
             TPosition.Update(time, ref Position);
             EffectTimer += time;
@@ -111,7 +111,7 @@ namespace HorizontalShooter
 
         public override void Draw(SpriteBatch batch)
         {
-            Assets.BlackWhite.Parameters["param1"].SetValue(pouet);
+            Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
             Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
             batch.Draw(Texture, Position, null, TrueColor, Rotation, Vector2.Zero, 1f, SpriteEffects.None, 1f);
         }

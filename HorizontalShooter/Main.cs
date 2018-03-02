@@ -54,6 +54,7 @@ namespace HorizontalShooter
             Device.Clear(Color.Black);
 
             if (CurrentScreen != null) CurrentScreen.Draw();
+
         }
 
         public static void SetScreen(Screen screen)

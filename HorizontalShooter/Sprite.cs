@@ -24,7 +24,8 @@ namespace HorizontalShooter
         public Vector2 Position;
         public Vector2 Velocity;
         public Rectangle Black;
-        public float pouet;
+        public float DualityValue;
+        public bool Effect;
 
 
         public Rectangle Hitbox
@@ -42,12 +43,13 @@ namespace HorizontalShooter
             Texture = texture;
             Position = position;
             Black = new Rectangle(0, 0, Texture.Width, 0);
+            Effect = effect;
         }
 
         public virtual void Update(float time)
         {
             Position += Velocity;
-            pouet = (GameScreen.Duality.Height - Position.Y) / Texture.Height;
+            DualityValue = (GameScreen.Duality.Height - Position.Y) / Texture.Height;
 
         }
 

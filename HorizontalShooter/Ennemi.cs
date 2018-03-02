@@ -14,14 +14,9 @@ namespace HorizontalShooter
         public Color Color;
         public float StartPositionY;
         public TweenPosition TPosition;
-        
-        
-
-        //EFFECT
-        public bool Effect;
 
 
-        public Ennemi(Vector2 position, Color color) : base(Utils.CreateTexture(40,40, Color.White), position, false)
+        public Ennemi(Vector2 position, Color color) : base(Utils.CreateTexture(40,40, Color.White), position, true)
         {
             Color = color;
             StartPositionY = position.Y;
@@ -38,10 +33,12 @@ namespace HorizontalShooter
             //base.Draw(batch);
             if (Effect)
             {
-                Assets.BlackWhite.Parameters["param1"].SetValue(pouet);
+                Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
                 Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+                base.Draw(batch);
             }
-            batch.Draw(Texture, Position, Color);
+            else
+                batch.Draw(Texture, Position, Color);
         }
 
     }

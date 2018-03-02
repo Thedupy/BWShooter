@@ -12,25 +12,25 @@ namespace HorizontalShooter//LMOOOOL
     public class Screen
     {
         public SpriteBatch Batch;
+        
 
         public Screen()
         {
             Batch = new SpriteBatch(Main.Device);
+            
         }
 
         public virtual void Create()
         {
-
         }
 
         public virtual void Update(float time)
         {
-
+            
         }
 
         public virtual void Draw()
         {
-
         }
 
         public virtual void Dispose()
@@ -45,8 +45,13 @@ namespace HorizontalShooter//LMOOOOL
         int DualHeight;
         public static Rectangle Duality;
         public WaveManager WManager;
-        Player Ship;
+        public static Player Ship;
         public static List<Ennemi> Ennemis;
+        public static List<PowerUp> PowerUps;
+
+        //Rectangle Fade;
+        //Color FadeColor;
+
         public GameScreen()
             : base()
         {
@@ -66,16 +71,44 @@ namespace HorizontalShooter//LMOOOOL
                 new NormalEnnemi(new Vector2(750, 320), Color.White),
                 new NormalEnnemi(new Vector2(750, 560), Color.Black)
             };
+            PowerUps = new List<PowerUp>()
+            {
+                new PowerUp(PowerUpType.ShootUp),
+                new PowerUp(PowerUpType.Shower)
+            };
             WManager = new WaveManager(ref Ennemis);
+
+            //Fade = new Rectangle(0, 0, Main.Width, Main.Height);
+            //FadeColor = new Color(Color.Red, 0f);
         }
 
         public override void Update(float time)
         {
+            //if (Input.Left(true))
+            //{
+            //    if (FadeColor.A + 5 <= 255)
+            //        FadeColor.A += 5;
+            //    else
+            //        FadeColor.A = 255;
+            //    Console.WriteLine(FadeColor.A);
+            //}
+            //if (Input.Right(true) && FadeColor.A - 5 >= 0)
+            //{
+            //    if (FadeColor.A - 5 >= 0)
+            //        FadeColor.A -= 5;
+            //    else
+            //        FadeColor.A = 0;
+            //    Console.WriteLine(FadeColor.A);
+            //}
             BG.Update(time);
             WManager.Update(time);
             Duality = new Rectangle(0, 0, Main.Width, DualHeight);
             DualHeight = MathHelper.Clamp(DualHeight, 0, Main.Height);
             foreach (var item in Ennemis)
+            {
+                item.Update(time);
+            }
+            foreach (var item in PowerUps)
             {
                 item.Update(time);
             }
@@ -88,10 +121,15 @@ namespace HorizontalShooter//LMOOOOL
             {
                 WManager.NormalWave(5, EnnemiType.Sine, Main.Rand.Next(50,550));
             }
+            if (Input.KeyPressed(Keys.NumPad6, true))
+            {
+                PowerUps.Add(new PowerUp(PowerUpType.ShootUp));
+            }
 
             Ship.Update(time);
             CollisionBulletEnnemis(Ship.Bullets, Ennemis);
             Ennemis.RemoveAll(k => k.Position.X + k.Texture.Width < 0);
+            PowerUps.RemoveAll(k => k.Ended == true || k.Position.X + k.Texture.Width <= 0);
         }
 
         public override void Draw()
@@ -99,12 +137,19 @@ namespace HorizontalShooter//LMOOOOL
             Batch.Begin();
             Batch.Draw(Assets.Pixel, Duality, Color.White);
             BG.Draw(Batch);
+
+            foreach (var item in PowerUps)
+            {
+                item.Draw(Batch);
+            }
+            //Batch.Draw(Assets.Pixel, Fade, FadeColor);
+
+            Batch.End();
+            Batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             foreach (var item in Ennemis)
             {
                 item.Draw(Batch);
             }
-            Batch.End();
-            Batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             Ship.Draw(Batch);
             Batch.End();
         }

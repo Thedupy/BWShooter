@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HorizontalShooter
 {
-    class Player : Sprite
+    public class Player : Sprite
     {
         public List<Bullet> Bullets;
         public Player(Vector2 position) : base(Assets.Ship, position, true)
@@ -53,10 +53,9 @@ namespace HorizontalShooter
 
         public override void Draw(SpriteBatch batch)
         {
-            Assets.BlackWhite.Parameters["param1"].SetValue(pouet);
+            Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
             Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
             base.Draw(batch);
-
             foreach (var item in Bullets)
             {
                 item.Draw(batch);
