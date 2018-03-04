@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System;
 using Microsoft.Xna.Framework.Media;
 
+//prout
+
 namespace HorizontalShooter
 {
     public class Assets
