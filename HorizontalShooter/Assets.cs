@@ -19,7 +19,6 @@ namespace HorizontalShooter
         public static Song Intro, Music;
 
         public static SpriteFont Font;
-        //LOL
 
         public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
         public static List<SoundEffect> MissileSound = new List<SoundEffect>();
@@ -74,6 +73,7 @@ namespace HorizontalShooter
 
         public static void PlayRandomSound(List<SoundEffect> list)
         {
+            //ROBINSON
             list[Main.Rand.Next(list.Count - 1)].Play();
         }
         #endregion

@@ -78,8 +78,7 @@ namespace HorizontalShooter//LMOOOOL
                 new PowerUp(PowerUpType.Shower)
             };
             WManager = new WaveManager(ref Ennemis);
-            MediaPlayer.Play(Assets.Music);
-            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(Assets.Intro);
 
             //Fade = new Rectangle(0, 0, Main.Width, Main.Height);
             //FadeColor = new Color(Color.Red, 0f);
@@ -87,12 +86,18 @@ namespace HorizontalShooter//LMOOOOL
 
         public override void Update(float time)
         {
-            //if(MediaPlayer.PlayPosition == Assets.Intro.Duration - TimeSpan.FromSeconds(2))
-            //{
-            //    Console.WriteLine("lol");
-            //    MediaPlayer.Play(Assets.Music);
-            //    MediaPlayer.IsRepeating = true;   
-            //}
+            if (MediaPlayer.PlayPosition >= TimeSpan.FromMilliseconds(54195))
+            {
+                MediaPlayer.Stop();
+                Console.WriteLine("lol");
+                MediaPlayer.Play(Assets.Music);
+                MediaPlayer.IsRepeating = true;
+            }
+            Console.WriteLine(MediaPlayer.PlayPosition);
+            if(Input.KeyPressed(Keys.NumPad0, true))
+            {
+                MediaPlayer.PlayPosition.Add(TimeSpan.FromMilliseconds(5000));
+            }
             //if (Input.Left(true))
             //{
             //    if (FadeColor.A + 5 <= 255)

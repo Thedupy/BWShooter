@@ -219,21 +219,21 @@
 /processorParam:TextureFormat=Color
 /build:font.bmp
 
-#begin Music/music.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Music/music.mp3
-
-#begin Music/intro.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:Music/intro.mp3
-
 #begin Sound/powerup.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/powerup.wav
+
+#begin Music/music.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/music.wav
+
+#begin Music/intro.wav
+/importer:WavImporter
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/intro.wav
 
