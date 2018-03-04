@@ -69,7 +69,7 @@ namespace HorizontalShooter//LMOOOOL
                 new NormalEnnemi(new Vector2(750, 450), Color.Black),
                 new NormalEnnemi(new Vector2(750, 500), Color.Black),
                 new NormalEnnemi(new Vector2(750, 320), Color.White),
-                new NormalEnnemi(new Vector2(750, 560), Color.Black)
+                new NormalEnnemi(new Vector2(750, 210), Color.Black)
             };
             PowerUps = new List<PowerUp>()
             {
@@ -103,7 +103,7 @@ namespace HorizontalShooter//LMOOOOL
             BG.Update(time);
             WManager.Update(time);
             Duality = new Rectangle(0, 0, Main.Width, DualHeight);
-            DualHeight = MathHelper.Clamp(DualHeight, 0, Main.Height);
+            DualHeight = MathHelper.Clamp(DualHeight, 0, HUD.MaxHUD);
             foreach (var item in Ennemis)
             {
                 item.Update(time);
@@ -121,14 +121,22 @@ namespace HorizontalShooter//LMOOOOL
             {
                 WManager.NormalWave(5, EnnemiType.Sine, Main.Rand.Next(50,550));
             }
+            if (Input.KeyPressed(Keys.NumPad7, true))
+            {
+                WManager.NormalWave(5, EnnemiType.Path, Main.Rand.Next(50, 550));
+            }
             if (Input.KeyPressed(Keys.NumPad6, true))
             {
                 PowerUps.Add(new PowerUp(PowerUpType.ShootUp));
             }
+            if (Input.KeyPressed(Keys.NumPad6, true))
+            {
+                PowerUps.Add(new PowerUp(PowerUpType.Shower));
+            }
 
             Ship.Update(time);
             CollisionBulletEnnemis(Ship.Bullets, Ennemis);
-            Ennemis.RemoveAll(k => k.Position.X + k.Texture.Width < 0);
+            Ennemis.RemoveAll(k => k.Position.X + k.Texture.Width < 0 || k.Ended);
             PowerUps.RemoveAll(k => k.Ended == true || k.Position.X + k.Texture.Width <= 0);
         }
 
@@ -136,14 +144,13 @@ namespace HorizontalShooter//LMOOOOL
         {
             Batch.Begin();
             Batch.Draw(Assets.Pixel, Duality, Color.White);
-            BG.Draw(Batch);
+            BG.DrawBack(Batch);
 
             foreach (var item in PowerUps)
             {
                 item.Draw(Batch);
             }
             //Batch.Draw(Assets.Pixel, Fade, FadeColor);
-
             Batch.End();
             Batch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
             foreach (var item in Ennemis)
@@ -151,6 +158,10 @@ namespace HorizontalShooter//LMOOOOL
                 item.Draw(Batch);
             }
             Ship.Draw(Batch);
+            Batch.End();
+            Batch.Begin();
+            BG.Draw(Batch);
+            HUD.MyHUD.Draw(Batch);
             Batch.End();
         }
 
@@ -172,8 +183,9 @@ namespace HorizontalShooter//LMOOOOL
                     if (Shoot[i].Hitbox.Intersects(ennemis[j].Hitbox))
                     {
                         Assets.Sounds["bullethit"].Play();
+                        HUD.MyHUD.SCORE += ennemis[j].Value;
                         bullet.Remove(bullet[i]);
-                        ennemis.Remove(ennemis[j]);
+                        ennemis[j].Touched = true;
                     }
                 }
             }
@@ -184,9 +196,10 @@ namespace HorizontalShooter//LMOOOOL
                 if (kek.Cible != null && kek.Hitbox.Intersects(kek.Cible.Hitbox))
                 {
                     kek.Launch.Stop();
+                    HUD.MyHUD.SCORE += kek.Cible.Value;
                     Assets.PlayRandomSound(Assets.MissileHitSound);
                     bullet.Remove(kek);
-                    ennemis.Remove(kek.Cible);
+                    kek.Ended = true;
                 }
             }
         }

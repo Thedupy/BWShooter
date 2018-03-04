@@ -22,5 +22,14 @@ namespace HorizontalShooter
             texture.SetData(cols);
             return texture;
         }
+
+        public static Texture2D Slice(Rectangle region, Texture2D sheet)
+        {
+            Color[] rawdata = new Color[region.Width * region.Height];
+            sheet.GetData(0, region, rawdata, 0, rawdata.Length);
+            Texture2D BufferTexture = new Texture2D(Main.Device, region.Width, region.Height);
+            BufferTexture.SetData(rawdata);
+            return BufferTexture;
+        }
     }
 }

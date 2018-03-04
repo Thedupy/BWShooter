@@ -9,8 +9,11 @@ namespace HorizontalShooter
     public class Assets
     {
         #region Variable
-        public static Texture2D Pixel, Ship;
+        public static Texture2D Pixel, Ship, Bullet, EnnemiPath, EnnemiSin, EnnemiNormal, Missile, Power, Shield;
+        public static Texture2D MissileIcon, LifeIcon;
         public static Effect BlackWhite;
+
+        public static SpriteFont Font;
 
         public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
         public static List<SoundEffect> MissileSound = new List<SoundEffect>();
@@ -22,7 +25,19 @@ namespace HorizontalShooter
         {
             Pixel = Utils.CreateTexture(1, 1, Color.White);
             BlackWhite = Main.Content.Load<Effect>("blackwhite");
-            Ship = Main.Content.Load<Texture2D>("ship");
+            Ship = Main.Content.Load<Texture2D>("Sprite/ship");
+            EnnemiPath = Main.Content.Load<Texture2D>("Sprite/ennemiPath");
+            EnnemiSin = Main.Content.Load<Texture2D>("Sprite/ennemiSin");
+            EnnemiNormal = Main.Content.Load<Texture2D>("Sprite/ennemiNormal");
+            Missile = Main.Content.Load<Texture2D>("Sprite/missile");
+            Bullet = Main.Content.Load<Texture2D>("Sprite/bullet");
+            Power = Main.Content.Load<Texture2D>("Sprite/powerup");
+
+
+            //HUD
+            LifeIcon = Main.Content.Load<Texture2D>("Sprite/icon_life");
+            MissileIcon = Main.Content.Load<Texture2D>("Sprite/icon_missile");
+            Font = Main.Content.Load<SpriteFont>("font");
 
             LoadSound();
         }

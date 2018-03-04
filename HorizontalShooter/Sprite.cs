@@ -26,6 +26,7 @@ namespace HorizontalShooter
         public Rectangle Black;
         public float DualityValue;
         public bool Effect;
+        public bool Ended;
 
 
         public Rectangle Hitbox
@@ -55,8 +56,14 @@ namespace HorizontalShooter
 
         public virtual void Draw(SpriteBatch batch)
         {
-            batch.Draw(Texture, Position, Color.White);
-
+            if (Effect)
+            {
+                Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
+                Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+                batch.Draw(Texture, Position, Color.White);
+            }
+            else
+                batch.Draw(Texture, Position, Color.White);
             ////DECOMMENTER SI BESOIN DE DESSINER LES HITBOX
             //Texture2D tex = Utils.CreateTexture(Hitbox.Width, Hitbox.Height, new Color(255, 0, 0, 50));
             //if (tex != null)

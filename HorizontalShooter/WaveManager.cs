@@ -21,6 +21,9 @@ namespace HorizontalShooter
         Vector2[] Path;
         int Sin;
         Color Color;
+        float Speed;
+
+        float WaveTimer;
 
         public WaveManager(ref List<Ennemi> buffer)
         {
@@ -31,6 +34,16 @@ namespace HorizontalShooter
 
         public void Update(float time)
         {
+            WaveTimer += time;
+            if(WaveTimer >= 5000)
+            {
+                var lel = Enum.GetValues(typeof(EnnemiType));
+                EnnemiType randomBar = (EnnemiType)lel.GetValue(Main.Rand.Next(lel.Length));
+                NormalWave(5, randomBar, Main.Rand.Next(50, 550));
+                WaveTimer = 0;
+            }
+
+
             if (Run)
             {
                 Timer += time;
@@ -42,7 +55,7 @@ namespace HorizontalShooter
                             Buffer.Add(new NormalEnnemi(new Vector2(Main.Width + 50, PosY), Color));
                             break;
                         case EnnemiType.Path:
-                            Buffer.Add(new PathEnnemi(new Vector2(Main.Width + 50, PosY), Color, Path));
+                            Buffer.Add(new PathEnnemi(new Vector2(Main.Width + 50, PosY), Color, Path, Speed));
                             break;
                         case EnnemiType.Sine:
                             Buffer.Add(new SineEnnemi(new Vector2(Main.Width + 50, PosY), Color, Sin));
@@ -70,8 +83,11 @@ namespace HorizontalShooter
             PosY = posY;
             Etype = type;
             if (Etype == EnnemiType.Path)
-                Path = CreateRandomPath(Main.Rand.Next(3,6));
-            else if(Etype == EnnemiType.Sine)
+            {
+                Path = CreateRandomPath();
+                Speed = Main.Rand.Next(2000, 3500);
+            }
+            else if (Etype == EnnemiType.Sine)
             {
                 int bufferY = 0;
                 if (MathHelper.Distance(PosY, 0) > MathHelper.Distance(PosY, Main.Height))
@@ -87,14 +103,13 @@ namespace HorizontalShooter
             Start();
         }
 
-        public Vector2[] CreateRandomPath(int cpt)
+        public Vector2[] CreateRandomPath()
         {
-            Vector2[] BufferPath = new Vector2[cpt + 1];
-            for (int i = 0; i < cpt - 1; i++)
+            Vector2[] BufferPath = new Vector2[4];
+            for (int i = 1; i < 5; i++)
             {
-                BufferPath[i] = new Vector2(Main.Rand.Next(800), Main.Rand.Next(600));
+                BufferPath[i-1] = new Vector2(Main.Width - (i*220), Main.Rand.Next(HUD.MaxHUD - 50));
             }
-            BufferPath[cpt-1] = new Vector2(-100, Main.Rand.Next(600));
             return BufferPath;
         }
 

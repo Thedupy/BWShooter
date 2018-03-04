@@ -14,31 +14,87 @@ namespace HorizontalShooter
         public Color Color;
         public float StartPositionY;
         public TweenPosition TPosition;
+        public int Value;
+        public bool Touched;
+        public Sprite[] DeathAnimation;
+        public bool CreateDeath = false;
+        public float TimerEnded;
+
+        public new Rectangle Hitbox
+        {
+            get { if (!Touched) return new Rectangle((int)Position.X, (int)Position.Y, Texture.Width, Texture.Height); else return new Rectangle(-40, -40, 0, 0); }
+        }
 
 
-        public Ennemi(Vector2 position, Color color) : base(Utils.CreateTexture(40,40, Color.White), position, true)
+        public Ennemi(Texture2D texture, Vector2 position, Color color) : base(texture, position, true)
         {
             Color = color;
             StartPositionY = position.Y;
+            Effect = false;
+            DeathAnimation = new Sprite[4];
         }
 
         public override void Update(float time)
         {
             base.Update(time);
+            if(Touched)
+            {
+                UpdateDeath(time);
+            }
                
+        }
+
+        private void UpdateDeath(float time)
+        {
+            if(!CreateDeath)
+            {
+                DeathAnimation[0] = new Sprite(Utils.Slice(new Rectangle(0, 0, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X, Position.Y), true);
+                DeathAnimation[1] = new Sprite(Utils.Slice(new Rectangle(Texture.Width / 2, 0, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X + Texture.Width / 2, Position.Y), true);
+                DeathAnimation[2] = new Sprite(Utils.Slice(new Rectangle(0, Texture.Height / 2, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X, Position.Y + Texture.Height / 2), true);
+                DeathAnimation[3] = new Sprite(Utils.Slice(new Rectangle(Texture.Width / 2, Texture.Height / 2, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height / 2), true);
+                DeathAnimation[0].Velocity = new Vector2(-1);
+                DeathAnimation[1].Velocity = new Vector2(1, -1);
+                DeathAnimation[2].Velocity = new Vector2(-1, 1);
+                DeathAnimation[3].Velocity = new Vector2(1);
+                CreateDeath = true;
+            }
+            else
+            {
+                TimerEnded += time;
+                if (TimerEnded >= 1000)
+                    Ended = true;
+                    
+                foreach (var item in DeathAnimation)
+                {
+                    item.Update(time);
+                }
+            }
+
         }
 
         new public void Draw(SpriteBatch batch)
         {
-            //base.Draw(batch);
-            if (Effect)
+            if (Touched && DeathAnimation[0] != null)
             {
-                Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
-                Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
-                base.Draw(batch);
+                foreach (var item in DeathAnimation)
+                {
+                    item.Draw(batch);
+                }
+            }
+            else if (!Touched && Effect)
+            {
+                {
+                    Assets.BlackWhite.Parameters["param1"].SetValue(DualityValue);
+                    Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+                    base.Draw(batch);
+                }
             }
             else
+            {
+                Assets.BlackWhite.Parameters["param1"].SetValue(0f);
+                Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
                 batch.Draw(Texture, Position, Color);
+            }
         }
 
     }
@@ -49,13 +105,16 @@ namespace HorizontalShooter
         float PathTimer;
         int PathIndex;
         Vector2[] Path;
+        float Speed;
 
-        public PathEnnemi(Vector2 position, Color color, Vector2[] path) : base(position, color)
+        public PathEnnemi(Vector2 position, Color color, Vector2[] path, float speed) : base(Assets.EnnemiPath, position, color)
         {
             Color = color;
             StartPositionY = position.Y;
             Path = path;
             TPosition = new TweenPosition(this);
+            Speed = speed;
+            Value = 50;
         }
 
         public override void Update(float time)
@@ -63,13 +122,10 @@ namespace HorizontalShooter
             base.Update(time);
             TPosition.Update(time, ref Position);
             PathTimer += time;
-            if (PathTimer > 1500)
+            if (PathTimer > Speed && PathIndex <= Path.Length - 1)
             {
-                TPosition.Move(Path[PathIndex], 1000, EaseFunction.EaseInOutQuad);
-                if (PathIndex == Path.Length - 1)
-                    PathIndex = 0;
-                else
-                    PathIndex++;
+                TPosition.Move(Path[PathIndex], Speed);
+                PathIndex++;
 
                 PathTimer = 0;
             }
@@ -79,9 +135,9 @@ namespace HorizontalShooter
 
     public class NormalEnnemi : Ennemi
     {
-        public NormalEnnemi(Vector2 position, Color color) : base(position, color)
+        public NormalEnnemi(Vector2 position, Color color) : base(Assets.EnnemiNormal, position, color)
         {
-
+            Value = 10;
         }
 
         public override void Update(float time)
@@ -97,11 +153,13 @@ namespace HorizontalShooter
         //SIN
         int Sin;
 
-        public SineEnnemi(Vector2 position, Color color, int sin) : base(position, color)
+        public SineEnnemi(Vector2 position, Color color, int sin) : base(Assets.EnnemiSin, position, color)
         {
             Color = color;
             StartPositionY = position.Y;
             Sin = sin;
+
+            Value = 30;
         }
 
         public override void Update(float time)

@@ -12,14 +12,24 @@ namespace HorizontalShooter
     public class Player : Sprite
     {
         public List<Bullet> Bullets;
+        //TIR
+        float CDShoot = 500, TimerShoot;
+        //MISSILE
+        public static int MissileCount;
+        internal static int LifeCount;
+
         public Player(Vector2 position) : base(Assets.Ship, position, true)
         {
             Bullets = new List<Bullet>();
+            MissileCount = 3;
+            LifeCount = 3;
         }
 
         public override void Update(float time)
         {
             base.Update(time);
+
+            //MOUVEMENT
             if (Input.KeyPressed(Keys.Z, false))
             {
                 Velocity.Y = -5;
@@ -31,19 +41,36 @@ namespace HorizontalShooter
             else
                 Velocity.Y = 0;
 
-            if(Input.KeyPressed(Keys.Space, true))
+            //TIR BALLE
+            TimerShoot += time;
+
+            if (Input.KeyPressed(Keys.Space, false))
             {
-                Bullets.Add(new GunShoot(new Vector2(Position.X + Texture.Width + Velocity.X + 5, Position.Y + (Texture.Height / 2))));
-                Assets.Sounds["bullet"].Play();
-            }
-            if (Input.KeyPressed(Keys.E, true))
-            {
-                Assets.PlayRandomSound(Assets.MissileSound);
-                Bullets.Add(new Missile(new Vector2(Position.X, Position.Y + Velocity.Y)));
+                if (TimerShoot >= CDShoot)
+                {
+                    Bullets.Add(new GunShoot(new Vector2(Position.X + Texture.Width + Velocity.X + 5, Position.Y + (Texture.Height / 2))));
+                    Assets.Sounds["bullet"].Play();
+                    TimerShoot = 0;
+                    if(MissileCount <3)
+                        MissileCount++;
+                }
             }
 
-            Position = Vector2.Clamp(Position, Vector2.Zero, new Vector2(Main.Width, Main.Height));
+            //TIR MISSILE
+            if (Input.KeyPressed(Keys.E, true))
+            {
+                if (MissileCount > 0)
+                {
+                    Assets.PlayRandomSound(Assets.MissileSound);
+                    Bullets.Add(new Missile(new Vector2(Position.X, Position.Y + Velocity.Y)));
+                    MissileCount--;
+                }
+            }
+
+            //CLAMP POSITION
+            Position = Vector2.Clamp(Position, Vector2.Zero, new Vector2(Main.Width, HUD.MaxHUD - Texture.Height));
             
+            //UPDATE BALL
             for (int i = 0; i < Bullets.Count; i++)
             {
                 Bullets[i].Update(time);

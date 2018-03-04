@@ -4,7 +4,7 @@ float param1;
 float4 PixelShaderFunction(float4 pos : SV_POSITION, float4 color1 : Color0, float2 coords: TEXCOORD0) : SV_TARGET0
 {
 	float4 color = tex2D(s0, coords);
-	if (color.a == 1)
+	if (color.a > 0)
 	{
 		if (coords.y < param1)
 			color.rgb = 0;

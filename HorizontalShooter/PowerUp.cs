@@ -10,20 +10,26 @@ namespace HorizontalShooter
     public enum PowerUpType { Shower, ShootUp }
     public class PowerUp : Sprite
     {
-        OnClicked Effect;
+        OnClicked ZeEffect;
         public bool Ended;
 
-        public PowerUp(PowerUpType ptype) : base(Assets.Pixel, new Vector2(Main.Width + 50, Main.Rand.Next(Main.Height)), false)
+        public PowerUp(PowerUpType ptype) : base(Assets.Power, new Vector2(Main.Width + 50, Main.Rand.Next(HUD.MaxHUD - Assets.Power.Height)), false)
         {
             switch(ptype)
             {
                 case PowerUpType.ShootUp:
-                    Texture = Utils.CreateTexture(30, 30, Color.Pink);
-                    Effect = () => { Console.WriteLine("Puissance de feu augmenté");};
+                    //Texture = Utils.CreateTexture(30, 30, Color.Pink);
+                    ZeEffect = () => { Player.MissileCount = 3;};
                     break;
                 case PowerUpType.Shower:
-                    Texture = Utils.CreateTexture(30, 30, Color.LightBlue);
-                    Effect = () => { Console.WriteLine("ON SE CACHE PAS LES CONNARDS");};
+                    //Texture = Utils.CreateTexture(30, 30, Color.LightBlue);
+                    ZeEffect = () =>
+                    {
+                        foreach (var item in GameScreen.Ennemis)
+                        {
+                            item.Effect = true;
+                        };
+                    };
                     break;
             }
         }
@@ -35,7 +41,7 @@ namespace HorizontalShooter
             Velocity.X = -2f;
             if (GameScreen.Ship.Hitbox.Intersects(Hitbox))
             {
-                Effect.Invoke();
+                ZeEffect.Invoke();
                 Ended = true;
             }
         }

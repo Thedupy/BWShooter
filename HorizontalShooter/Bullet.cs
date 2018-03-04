@@ -8,7 +8,6 @@ namespace HorizontalShooter
 {
     public class Bullet : Sprite
     {
-        public static Texture2D TextureBullet = Utils.CreateTexture(10, 5, Color.White);
 
         public Bullet(Texture2D texture, Vector2 position, bool effect) : base(texture, position, true)
         {
@@ -31,7 +30,7 @@ namespace HorizontalShooter
 
     public class GunShoot : Bullet
     {
-        public GunShoot(Vector2 position) : base(Utils.CreateTexture(10,5, Color.White), position, true)
+        public GunShoot(Vector2 position) : base(Assets.Bullet, position, true)
         {
 
         }
@@ -63,7 +62,7 @@ namespace HorizontalShooter
 
         public SoundEffectInstance Launch = Assets.Sounds["missilelaunch"].CreateInstance();
 
-        public Missile(Vector2 position) : base(Utils.CreateTexture(30,10, Color.White), position, false)
+        public Missile(Vector2 position) : base(Assets.Missile, position, false)
         {
             TPosition = new TweenPosition(this);
             TPosition.Move(new Vector2(Position.X, Position.Y - 100), 1000, EaseFunction.EaseOutQuad);
@@ -87,7 +86,7 @@ namespace HorizontalShooter
                 base.Update(time);
                 if (Cible == null)
                 {
-                    List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false);
+                    List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false && k.Position.X < Main.Width);
                     if (Prout.Count > 0)
                     {
                         Assets.Sounds["missileset"].Play();
