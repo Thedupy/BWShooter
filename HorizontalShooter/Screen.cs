@@ -153,7 +153,7 @@ namespace HorizontalShooter//LMOOOOL
             Batch.Draw(Assets.Pixel, Duality, Color.White);
             BG.DrawBack(Batch);
 
-            foreach (var item in PowerUps)
+            foreach (var item in PowerUps)//LOL
             {
                 item.Draw(Batch);
             }
