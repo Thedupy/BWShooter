@@ -49,6 +49,7 @@ namespace HorizontalShooter
                 Timer += time;
                 if (Timer >= 1000)
                 {
+                    Console.WriteLine(Color);
                     switch (Etype)
                     {
                         case EnnemiType.Normal:
@@ -99,7 +100,8 @@ namespace HorizontalShooter
 
                 Sin = Main.Rand.Next(10, bufferY);
             }
-            Color = RandomColor();
+            //Color = RandomColor();
+            Color = Color.Black;
             Start();
         }
 
@@ -115,8 +117,8 @@ namespace HorizontalShooter
 
         public Color RandomColor()
         {
-            Color[] BW = new Color[2] { Color.Black, Color.White };
-            return BW[Main.Rand.Next(2)];
+            Color[] BW = new Color[2] { Color.White, Color.Black };
+            return BW[Main.Rand.Next(2)%2];
         }
     }
 }

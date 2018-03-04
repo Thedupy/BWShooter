@@ -62,7 +62,9 @@ namespace HorizontalShooter
             {
                 TimerEnded += time;
                 if (TimerEnded >= 1000)
+                {
                     Ended = true;
+                }
                     
                 foreach (var item in DeathAnimation)
                 {
@@ -74,6 +76,7 @@ namespace HorizontalShooter
 
         new public void Draw(SpriteBatch batch)
         {
+            
             if (Touched && DeathAnimation[0] != null)
             {
                 foreach (var item in DeathAnimation)
@@ -91,9 +94,28 @@ namespace HorizontalShooter
             }
             else
             {
-                Assets.BlackWhite.Parameters["param1"].SetValue(0f);
-                Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
-                batch.Draw(Texture, Position, Color);
+                if(Color == Color.Black)
+                {
+                    Assets.BlackWhite.Parameters["param1"].SetValue(1f);
+                    Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+                    base.Draw(batch);
+                }
+                else if(Color == Color.White)
+                {
+                    Assets.BlackWhite.Parameters["param1"].SetValue(0f);
+                    Assets.BlackWhite.CurrentTechnique.Passes[0].Apply();
+                    base.Draw(batch);
+                }
+            }
+        }
+
+        public void RandomPower()
+        {
+            int Bufferbool = Main.Rand.Next(5);
+            if (Bufferbool == 1)
+            {
+                PowerUpType[] BW = new PowerUpType[2] { PowerUpType.ShootUp, PowerUpType.Shower };
+                GameScreen.PowerUps.Add(new PowerUp(BW[Main.Rand.Next(2)], Position));
             }
         }
 
@@ -164,6 +186,7 @@ namespace HorizontalShooter
 
         public override void Update(float time)
         {
+
             base.Update(time);
             Position.Y = StartPositionY + (-(float)Math.Cos(Position.X / 100) * Sin);
             Velocity.X = -2;

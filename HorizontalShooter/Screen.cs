@@ -13,12 +13,13 @@ namespace HorizontalShooter//LMOOOOL
     public class Screen
     {
         public SpriteBatch Batch;
+        public Transition Fondu;
         
 
         public Screen()
         {
             Batch = new SpriteBatch(Main.Device);
-            
+            Fondu = new Transition();
         }
 
         public virtual void Create()
@@ -27,17 +28,61 @@ namespace HorizontalShooter//LMOOOOL
 
         public virtual void Update(float time)
         {
-            
+            Fondu.Update(time);
         }
 
         public virtual void Draw()
         {
+            Fondu.Draw(Batch);
         }
 
         public virtual void Dispose()
         {
             Batch.Dispose();
         }
+    }
+
+    public class IntroScreen : Screen
+    {
+        int DualHeight;
+        public static Rectangle Duality;
+
+
+        public IntroScreen()
+        {
+            Duality = new Rectangle(0, 0, Main.Width, 0);
+            DualHeight = 400;
+        }
+
+
+        public override void Update(float time)
+        {
+            base.Update(time);
+            if (Input.KeyPressed(Keys.Enter, true))
+            {
+                Fondu.Fade(new GameScreen());
+            }
+
+            Duality = new Rectangle(0, 0, Main.Width, DualHeight);
+            DualHeight = MathHelper.Clamp(DualHeight, 0, Main.Height);
+
+            if (Input.KeyPressed(Keys.Down, false))
+                DualHeight += 5;
+            else if (Input.KeyPressed(Keys.Up, false))
+                DualHeight -= 5;
+        }
+
+
+        public override void Draw()
+        {
+            Batch.Begin();
+            Batch.Draw(Assets.Pixel, Duality, Color.White);
+            Batch.Draw(Assets.BGINTRO, Vector2.Zero, Color.White);
+            base.Draw();
+
+            Batch.End();
+        }
+
     }
 
     public class GameScreen : Screen
@@ -50,8 +95,7 @@ namespace HorizontalShooter//LMOOOOL
         public static List<Ennemi> Ennemis;
         public static List<PowerUp> PowerUps;
 
-        //Rectangle Fade;
-        //Color FadeColor;
+   
 
         public GameScreen()
             : base()
@@ -64,49 +108,16 @@ namespace HorizontalShooter//LMOOOOL
             Duality = new Rectangle(0, 0, Main.Width, 0);
             DualHeight = Main.Height/2;
             Ship = new Player(new Vector2(50, 500));
-            Ennemis = new List<Ennemi>()
-            {
-                new NormalEnnemi(new Vector2(750, 150), Color.White),
-                new NormalEnnemi(new Vector2(750, 450), Color.Black),
-                new NormalEnnemi(new Vector2(750, 500), Color.Black),
-                new NormalEnnemi(new Vector2(750, 320), Color.White),
-                new NormalEnnemi(new Vector2(750, 210), Color.Black)
-            };
-            PowerUps = new List<PowerUp>()
-            {
-                new PowerUp(PowerUpType.ShootUp),
-                new PowerUp(PowerUpType.Shower)
-            };
+            Ennemis = new List<Ennemi>();
+            PowerUps = new List<PowerUp>();
             WManager = new WaveManager(ref Ennemis);
-
-
-            //Fade = new Rectangle(0, 0, Main.Width, Main.Height);
-            //FadeColor = new Color(Color.Red, 0f);
+            Assets.Intro.Play();
+            Assets.Intro.Volume = 0.6f;
         }
 
         public override void Update(float time)
         {
-            Console.WriteLine(MediaPlayer.PlayPosition);
-            if(Input.KeyPressed(Keys.NumPad0, true))
-            {
-                MediaPlayer.PlayPosition.Add(TimeSpan.FromMilliseconds(5000));
-            }
-            //if (Input.Left(true))
-            //{
-            //    if (FadeColor.A + 5 <= 255)
-            //        FadeColor.A += 5;
-            //    else
-            //        FadeColor.A = 255;
-            //    Console.WriteLine(FadeColor.A);
-            //}
-            //if (Input.Right(true) && FadeColor.A - 5 >= 0)
-            //{
-            //    if (FadeColor.A - 5 >= 0)
-            //        FadeColor.A -= 5;
-            //    else
-            //        FadeColor.A = 0;
-            //    Console.WriteLine(FadeColor.A);
-            //}
+            base.Update(time);
             BG.Update(time);
             WManager.Update(time);
             Duality = new Rectangle(0, 0, Main.Width, DualHeight);
@@ -124,27 +135,11 @@ namespace HorizontalShooter//LMOOOOL
             else if (Input.KeyPressed(Keys.Up, false))
                 DualHeight -= 5;
 
-            if (Input.KeyPressed(Keys.NumPad5, true))
-            {
-                WManager.NormalWave(5, EnnemiType.Sine, Main.Rand.Next(50,550));
-            }
-            if (Input.KeyPressed(Keys.NumPad7, true))
-            {
-                WManager.NormalWave(5, EnnemiType.Path, Main.Rand.Next(50, 550));
-            }
-            if (Input.KeyPressed(Keys.NumPad6, true))
-            {
-                PowerUps.Add(new PowerUp(PowerUpType.ShootUp));
-            }
-            if (Input.KeyPressed(Keys.NumPad6, true))
-            {
-                PowerUps.Add(new PowerUp(PowerUpType.Shower));
-            }
-
             Ship.Update(time);
             CollisionBulletEnnemis(Ship.Bullets, Ennemis);
             Ennemis.RemoveAll(k => k.Position.X + k.Texture.Width < 0 || k.Ended);
             PowerUps.RemoveAll(k => k.Ended == true || k.Position.X + k.Texture.Width <= 0);
+            CollisionPlayerEnnemis();
         }
 
         public override void Draw()
@@ -153,7 +148,7 @@ namespace HorizontalShooter//LMOOOOL
             Batch.Draw(Assets.Pixel, Duality, Color.White);
             BG.DrawBack(Batch);
 
-            foreach (var item in PowerUps)//LOL
+            foreach (var item in PowerUps)
             {
                 item.Draw(Batch);
             }
@@ -169,12 +164,30 @@ namespace HorizontalShooter//LMOOOOL
             Batch.Begin();
             BG.Draw(Batch);
             HUD.MyHUD.Draw(Batch);
+            base.Draw();
             Batch.End();
         }
 
         public static bool IsInRectangle(Sprite sprite)
         {
             return Duality.Contains(sprite.Hitbox);
+        }
+
+        public void CollisionPlayerEnnemis()
+        {
+            foreach (var item in Ennemis)
+            {
+                if (Ship.Hitbox.Intersects(item.Hitbox) && Ship.Touched == false)
+                {
+                    Console.WriteLine("lol touche");
+                    item.Ended = true;
+                    Ship.Touched = true;
+                    if (Player.LifeCount == 1)
+                        Fondu.Fade(new GOScreen());
+                    else
+                        Player.LifeCount--;
+                }
+            }
         }
 
         public void CollisionBulletEnnemis(List<Bullet> bullet, List<Ennemi> ennemis)
@@ -193,6 +206,7 @@ namespace HorizontalShooter//LMOOOOL
                         Assets.Sounds["bullethit"].Play();
                         HUD.MyHUD.SCORE += ennemis[j].Value;
                         bullet.Remove(bullet[i]);
+                        ennemis[j].RandomPower();
                         ennemis[j].Touched = true;
                     }
                 }
@@ -207,9 +221,46 @@ namespace HorizontalShooter//LMOOOOL
                     HUD.MyHUD.SCORE += kek.Cible.Value;
                     Assets.PlayRandomSound(Assets.MissileHitSound);
                     kek.Cible.Touched = true;
+                    kek.Cible.RandomPower();
                     bullet.Remove(kek);
                 }
             }
         }
+    }
+
+    public class GOScreen : Screen
+    {
+        public GOScreen()
+        {
+            Assets.Intro.Stop();
+        }
+
+
+        public override void Update(float time)
+        {
+            base.Update(time);
+            if(Input.KeyPressed(Keys.Space, true))
+            {
+                Fondu.Fade(new GameScreen());
+                Player.LifeCount = 3;
+            }
+        }
+
+
+        public override void Draw()
+        {
+            Batch.Begin();
+            Batch.Draw(Assets.Pixel, new Rectangle(0, 0, Main.Width, Main.Height), Color.White);
+            Batch.DrawString(Assets.Font, "Score : " + HUD.MyHUD.SCORE.ToString(), new Vector2(Main.Width / 2, Main.Height / 2), Color.Black);
+            Batch.DrawString(Assets.Font, "Appuyez sur Barre Espace pour rejouer", new Vector2(Main.Width / 2, Main.Height / 2 + 50), Color.Black);
+            base.Draw();
+            Batch.End();
+        }
+
+        public void ResetAll()
+        {
+
+        }
+
     }
 }

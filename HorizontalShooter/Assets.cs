@@ -12,7 +12,7 @@ namespace HorizontalShooter
     public class Assets
     {
         #region Variable
-        public static Texture2D Pixel, Ship, Bullet, EnnemiPath, EnnemiSin, EnnemiNormal, Missile, Power, Shield;
+        public static Texture2D Pixel,PixelB, Ship, Bullet, EnnemiPath, EnnemiSin, EnnemiNormal, Missile, Power, Shield, BGINTRO;
         public static Texture2D MissileIcon, LifeIcon;
         public static Effect BlackWhite;
 
@@ -28,7 +28,9 @@ namespace HorizontalShooter
         #region Methode
         public static void LoadAll()
         {
+            BGINTRO = Main.Content.Load<Texture2D>("KEK");
             Pixel = Utils.CreateTexture(1, 1, Color.White);
+            PixelB = Utils.CreateTexture(1, 1, Color.Black);
             BlackWhite = Main.Content.Load<Effect>("blackwhite");
             Ship = Main.Content.Load<Texture2D>("Sprite/ship");
             EnnemiPath = Main.Content.Load<Texture2D>("Sprite/ennemiPath");

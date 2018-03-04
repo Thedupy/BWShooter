@@ -31,15 +31,21 @@ namespace HorizontalShooter
         {
             batch.Draw(Assets.Pixel, Cadre, Color.Red);
 
+            batch.DrawString(Assets.Font, "MISSILES : ", new Vector2(10, 576), Color.Black);
+
             for (int i = 0; i < Player.MissileCount; i++)
             {
-                batch.Draw(Assets.MissileIcon, new Vector2(20 + i * Assets.MissileIcon.Width, 576), Color.White);
+                batch.Draw(Assets.MissileIcon, new Vector2(100 + i * Assets.MissileIcon.Width, 576), Color.White);
             }
+
+            batch.DrawString(Assets.Font, "VIES : ", new Vector2(250, 576), Color.Black);
 
             for (int i = 0; i < Player.LifeCount; i++)
             {
-                batch.Draw(Assets.LifeIcon, new Vector2(150 + i * Assets.LifeIcon.Width, 576), Color.White);
+                batch.Draw(Assets.LifeIcon, new Vector2(320 + i * Assets.LifeIcon.Width, 576), Color.White);
             }
+
+            batch.DrawString(Assets.Font, "SCORE : ", new Vector2(Main.Width - 200, 576), Color.Black);
 
             batch.DrawString(Assets.Font, SCORE.ToString(), new Vector2(Main.Width - 100, 576), Color.Black);
         }

@@ -86,7 +86,7 @@ namespace HorizontalShooter
                 base.Update(time);
                 if (Cible == null)
                 {
-                    List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false && k.Position.X < Main.Width);
+                    List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false && k.Touched  == false && k.Position.X < Main.Width);
                     if (Prout.Count > 0)
                     {
                         //ROBINSON

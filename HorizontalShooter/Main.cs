@@ -38,7 +38,7 @@ namespace HorizontalShooter
             Graphics.SynchronizeWithVerticalRetrace = false;
             Graphics.ApplyChanges();
 
-            SetScreen(new GameScreen());
+            SetScreen(new IntroScreen());
 
         }
 

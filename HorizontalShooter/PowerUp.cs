@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,21 +12,21 @@ namespace HorizontalShooter
     public class PowerUp : Sprite
     {
         OnClicked ZeEffect;
-        public bool Ended;
+        Color Color;
 
-        public PowerUp(PowerUpType ptype) : base(Assets.Power, new Vector2(Main.Width + 50, Main.Rand.Next(HUD.MaxHUD - Assets.Power.Height)), false)
+        public PowerUp(PowerUpType ptype, Vector2 position) : base(Assets.Power, position, false)
         {
             switch(ptype)
             {
                 case PowerUpType.ShootUp:
-                    //Texture = Utils.CreateTexture(30, 30, Color.Pink);
+                    Color = Color.Red;
                     ZeEffect = () => { Player.MissileCount = 3;
                         //ROBINSON
                         Assets.Sounds["powerup"].Play();
                     };
                     break;
                 case PowerUpType.Shower:
-                    //Texture = Utils.CreateTexture(30, 30, Color.LightBlue);
+                    Color = Color.Yellow;
                     ZeEffect = () =>
                     {
                         foreach (var item in GameScreen.Ennemis)
@@ -50,6 +51,13 @@ namespace HorizontalShooter
                 Ended = true;
             }
         }
+
+
+        public new void Draw(SpriteBatch batch)
+        {
+            batch.Draw(Texture, Position, Color);
+        }
+
 
         public delegate void OnClicked();
     }
