@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System;
+using Microsoft.Xna.Framework.Media;
 
 namespace HorizontalShooter
 {
@@ -13,7 +14,10 @@ namespace HorizontalShooter
         public static Texture2D MissileIcon, LifeIcon;
         public static Effect BlackWhite;
 
+        public static Song Intro, Music;
+
         public static SpriteFont Font;
+        //LOL
 
         public static Dictionary<string, SoundEffect> Sounds = new Dictionary<string, SoundEffect>();
         public static List<SoundEffect> MissileSound = new List<SoundEffect>();
@@ -32,6 +36,9 @@ namespace HorizontalShooter
             Missile = Main.Content.Load<Texture2D>("Sprite/missile");
             Bullet = Main.Content.Load<Texture2D>("Sprite/bullet");
             Power = Main.Content.Load<Texture2D>("Sprite/powerup");
+
+            Music = Main.Content.Load<Song>("Music/music");
+            Intro = Main.Content.Load<Song>("Music/intro");
 
 
             //HUD
