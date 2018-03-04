@@ -52,10 +52,10 @@ namespace HorizontalShooter
                 DeathAnimation[1] = new Sprite(Utils.Slice(new Rectangle(Texture.Width / 2, 0, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X + Texture.Width / 2, Position.Y), true);
                 DeathAnimation[2] = new Sprite(Utils.Slice(new Rectangle(0, Texture.Height / 2, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X, Position.Y + Texture.Height / 2), true);
                 DeathAnimation[3] = new Sprite(Utils.Slice(new Rectangle(Texture.Width / 2, Texture.Height / 2, Texture.Width / 2, Texture.Height / 2), Texture), new Vector2(Position.X + Texture.Width / 2, Position.Y + Texture.Height / 2), true);
-                DeathAnimation[0].Velocity = new Vector2(-1);
-                DeathAnimation[1].Velocity = new Vector2(1, -1);
-                DeathAnimation[2].Velocity = new Vector2(-1, 1);
-                DeathAnimation[3].Velocity = new Vector2(1);
+                for (int i = 0; i < DeathAnimation.Length; i++)
+                {
+                    DeathAnimation[i].Velocity = new Vector2((float)(Main.Rand.NextDouble() * 2.0 - 1.0));
+                }
                 CreateDeath = true;
             }
             else

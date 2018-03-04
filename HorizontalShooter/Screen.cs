@@ -198,8 +198,8 @@ namespace HorizontalShooter//LMOOOOL
                     kek.Launch.Stop();
                     HUD.MyHUD.SCORE += kek.Cible.Value;
                     Assets.PlayRandomSound(Assets.MissileHitSound);
+                    kek.Cible.Touched = true;
                     bullet.Remove(kek);
-                    kek.Ended = true;
                 }
             }
         }

@@ -90,9 +90,9 @@ namespace HorizontalShooter
             else if (Etype == EnnemiType.Sine)
             {
                 int bufferY = 0;
-                if (MathHelper.Distance(PosY, 0) > MathHelper.Distance(PosY, Main.Height))
+                if (MathHelper.Distance(PosY, 0) > MathHelper.Distance(PosY, HUD.MaxHUD))
                 {
-                    bufferY = (int)MathHelper.Distance(PosY, Main.Height);
+                    bufferY = (int)MathHelper.Distance(PosY, HUD.MaxHUD);
                 }
                 else
                     bufferY = (int)MathHelper.Distance(PosY, 0);
