@@ -49,9 +49,13 @@ namespace HorizontalShooter
                 if (TimerShoot >= CDShoot)
                 {
                     Bullets.Add(new GunShoot(new Vector2(Position.X + Texture.Width + Velocity.X + 5, Position.Y + (Texture.Height / 2))));
+<<<<<<< Updated upstream
                     //ROBINSON
                  
                     Assets.Sounds["bullet"].Play(1f,0f,0f);
+=======
+                    Assets.Sounds["bullet"].Play(0.33f,0f,0f);
+>>>>>>> Stashed changes
 
                     TimerShoot = 0;
                     if(MissileCount <3)
