@@ -20,6 +20,7 @@ namespace HorizontalShooter
                 case PowerUpType.ShootUp:
                     //Texture = Utils.CreateTexture(30, 30, Color.Pink);
                     ZeEffect = () => { Player.MissileCount = 3;
+                        //ROBINSON
                         Assets.Sounds["powerup"].Play();
                     };
                     break;
@@ -31,6 +32,7 @@ namespace HorizontalShooter
                         {
                             item.Effect = true;
                         };
+                        //ROBINSON
                         Assets.Sounds["powerup"].Play();
                     };
                     break;

@@ -25,41 +25,11 @@
 /processorParam:Quality=Best
 /build:Sound/Bullet.wav
 
-#begin Sound/missile1.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/missile1.wav
-
-#begin Sound/missile2.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/missile2.wav
-
-#begin Sound/missile3.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/missile3.wav
-
-#begin Sound/missileset.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/missileset.wav
-
 #begin Sound/missilelaunch.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Sound/missilelaunch.wav
-
-#begin Sound/ennemybullethit.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Sound/ennemybullethit.wav
 
 #begin Sound/ennemimissilehit1.wav
 /importer:WavImporter
@@ -227,13 +197,43 @@
 
 #begin Music/music.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/music.wav
 
 #begin Music/intro.wav
 /importer:WavImporter
-/processor:SongProcessor
+/processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Music/intro.wav
+
+#begin Sound/missile1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/missile1.wav
+
+#begin Sound/missile2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/missile2.wav
+
+#begin Sound/missile3.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/missile3.wav
+
+#begin Sound/missileset.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/missileset.wav
+
+#begin Sound/ennemybullethit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/ennemybullethit.wav
 

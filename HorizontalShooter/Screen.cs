@@ -78,7 +78,7 @@ namespace HorizontalShooter//LMOOOOL
                 new PowerUp(PowerUpType.Shower)
             };
             WManager = new WaveManager(ref Ennemis);
-            MediaPlayer.Play(Assets.Intro);
+
 
             //Fade = new Rectangle(0, 0, Main.Width, Main.Height);
             //FadeColor = new Color(Color.Red, 0f);
@@ -86,13 +86,6 @@ namespace HorizontalShooter//LMOOOOL
 
         public override void Update(float time)
         {
-            if (MediaPlayer.PlayPosition >= TimeSpan.FromMilliseconds(54195))
-            {
-                MediaPlayer.Stop();
-                Console.WriteLine("lol");
-                MediaPlayer.Play(Assets.Music);
-                MediaPlayer.IsRepeating = true;
-            }
             Console.WriteLine(MediaPlayer.PlayPosition);
             if(Input.KeyPressed(Keys.NumPad0, true))
             {
@@ -196,6 +189,7 @@ namespace HorizontalShooter//LMOOOOL
 
                     if (Shoot[i].Hitbox.Intersects(ennemis[j].Hitbox))
                     {
+                        //ROBINSON
                         Assets.Sounds["bullethit"].Play();
                         HUD.MyHUD.SCORE += ennemis[j].Value;
                         bullet.Remove(bullet[i]);

@@ -16,7 +16,7 @@ namespace HorizontalShooter
         public static Texture2D MissileIcon, LifeIcon;
         public static Effect BlackWhite;
 
-        public static Song Intro, Music;
+        public static SoundEffectInstance Intro, Music;
 
         public static SpriteFont Font;
 
@@ -38,8 +38,8 @@ namespace HorizontalShooter
             Bullet = Main.Content.Load<Texture2D>("Sprite/bullet");
             Power = Main.Content.Load<Texture2D>("Sprite/powerup");
 
-            Music = Main.Content.Load<Song>("Music/music");
-            Intro = Main.Content.Load<Song>("Music/intro");
+            Music = Main.Content.Load<SoundEffect>("Music/music").CreateInstance();
+            Intro = Main.Content.Load<SoundEffect>("Music/intro").CreateInstance();
 
 
             //HUD

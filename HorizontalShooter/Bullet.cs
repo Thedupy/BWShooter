@@ -89,6 +89,7 @@ namespace HorizontalShooter
                     List<Ennemi> Prout = GameScreen.Ennemis.FindAll(k => k.Targeted == false && k.Position.X < Main.Width);
                     if (Prout.Count > 0)
                     {
+                        //ROBINSON
                         Assets.Sounds["missileset"].Play();
                         Launch.Play();
                         Cible = Prout[Main.Rand.Next(Prout.Count)];
