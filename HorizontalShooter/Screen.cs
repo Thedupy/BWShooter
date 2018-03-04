@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,6 +78,8 @@ namespace HorizontalShooter//LMOOOOL
                 new PowerUp(PowerUpType.Shower)
             };
             WManager = new WaveManager(ref Ennemis);
+            MediaPlayer.Play(Assets.Music);
+            MediaPlayer.IsRepeating = true;
 
             //Fade = new Rectangle(0, 0, Main.Width, Main.Height);
             //FadeColor = new Color(Color.Red, 0f);
@@ -84,6 +87,12 @@ namespace HorizontalShooter//LMOOOOL
 
         public override void Update(float time)
         {
+            //if(MediaPlayer.PlayPosition == Assets.Intro.Duration - TimeSpan.FromSeconds(2))
+            //{
+            //    Console.WriteLine("lol");
+            //    MediaPlayer.Play(Assets.Music);
+            //    MediaPlayer.IsRepeating = true;   
+            //}
             //if (Input.Left(true))
             //{
             //    if (FadeColor.A + 5 <= 255)

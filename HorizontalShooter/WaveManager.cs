@@ -39,7 +39,7 @@ namespace HorizontalShooter
             {
                 var lel = Enum.GetValues(typeof(EnnemiType));
                 EnnemiType randomBar = (EnnemiType)lel.GetValue(Main.Rand.Next(lel.Length));
-                NormalWave(5, randomBar, Main.Rand.Next(50, 550));
+                NormalWave(5, randomBar, Main.Rand.Next(50, HUD.MaxHUD - 50));
                 WaveTimer = 0;
             }
 
@@ -85,7 +85,7 @@ namespace HorizontalShooter
             if (Etype == EnnemiType.Path)
             {
                 Path = CreateRandomPath();
-                Speed = Main.Rand.Next(2000, 3500);
+                Speed = Main.Rand.Next(1000, 1500);
             }
             else if (Etype == EnnemiType.Sine)
             {

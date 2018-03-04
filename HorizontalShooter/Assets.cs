@@ -57,6 +57,7 @@ namespace HorizontalShooter
             Sounds.Add("missileset", Main.Content.Load<SoundEffect>("Sound/missileset"));
             Sounds.Add("missilelaunch", Main.Content.Load<SoundEffect>("Sound/missilelaunch"));
             Sounds.Add("bullethit", Main.Content.Load<SoundEffect>("Sound/ennemybullethit"));
+            Sounds.Add("powerup", Main.Content.Load<SoundEffect>("Sound/powerup"));
 
             //
             MissileSound.Add(Main.Content.Load<SoundEffect>("Sound/missile1"));

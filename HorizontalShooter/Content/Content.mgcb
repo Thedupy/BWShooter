@@ -231,3 +231,9 @@
 /processorParam:Quality=Best
 /build:Music/intro.mp3
 
+#begin Sound/powerup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/powerup.wav
+

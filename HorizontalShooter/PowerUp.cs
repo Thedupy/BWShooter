@@ -19,7 +19,9 @@ namespace HorizontalShooter
             {
                 case PowerUpType.ShootUp:
                     //Texture = Utils.CreateTexture(30, 30, Color.Pink);
-                    ZeEffect = () => { Player.MissileCount = 3;};
+                    ZeEffect = () => { Player.MissileCount = 3;
+                        Assets.Sounds["powerup"].Play();
+                    };
                     break;
                 case PowerUpType.Shower:
                     //Texture = Utils.CreateTexture(30, 30, Color.LightBlue);
@@ -29,6 +31,7 @@ namespace HorizontalShooter
                         {
                             item.Effect = true;
                         };
+                        Assets.Sounds["powerup"].Play();
                     };
                     break;
             }
